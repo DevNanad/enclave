@@ -1,12 +1,35 @@
+// import type { PlasmoMessaging } from "@plasmohq/messaging"
+
+// const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
+//   //const message = await querySomeApi(req.body.id)
+
+//   console.log(req.body)
+
+//   res.send({
+//     message: req.body
+//   })
+// }
+
+// export default handler
+
+import { createClient } from "@propelauth/javascript"
+
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 
+const client = createClient({
+  authUrl: process.env.PLASMO_PUBLIC_AUTH_URL,
+  enableBackgroundTokenRefresh: true
+})
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  //const message = await querySomeApi(req.body.id)
+  const authInfo = await client.getAuthenticationInfoOrNull()
 
-  console.log(req.body)
+  // If you want to make a fetch to an external API, pass the access token in
+  //   through the Authorization header, like:
+  // Authorization: Bearer ACCESS_TOKEN
+  // const message = await querySomeApi(req.body.id, authInfo.accessToken)
 
   res.send({
-    message: req.body
+    authInfo
   })
 }
 

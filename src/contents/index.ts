@@ -4,6 +4,10 @@ import type { PlasmoCSConfig } from "plasmo"
 //   matches: ["https://www.mail.google.com/*"]
 // }
 
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error))
+
 //get body of an open gmail
 
 let lastLoggedEmailBody = ""
