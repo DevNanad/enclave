@@ -54,8 +54,6 @@ export const Register = () => {
             errors.password = "Password is required";
         } else if (values.password.length < 4) {
             errors.password = "Password must be more than 4 characters";
-        } else if (values.password.length > 10) {
-            errors.password = "Password cannot exceed more than 10 characters";
         }
         if (values.password !== values.confirmPassword) {
             errors.confirmPassword = "Those passwords didn’t match. Try again.";
@@ -64,21 +62,21 @@ export const Register = () => {
     };
 
     return (
-        <>
-            <div className="container">
+            <div className="container h-full flex flex-col justify-center gap-12">
                 {Object.keys(formErrors).length === 0 && isSubmit ? (
-                    <div className="ui message success">
+                    <div className="ui message success w-full text-green-400 font-semibold text-base">
                         Registered Successfully
                     </div>
                 ) : (
                     <div></div> // Or null if you prefer
                 )}
-
-                <form onSubmit={handleSubmit} className="w-full">
-                    <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center mt-16 ">Register</h1>
+                <div className="w-full">
+                    <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center">Register</h1>
                     <h1 className=" text-blue-500 w-full font-medium text-center pb-4">Create your account</h1>
-
-                    <div className="ui form text-lg text-[#2974BD] w-full flex gap-2 flex-col items-center my-5">
+                </div>
+                
+                <form onSubmit={handleSubmit} className="w-full">
+                    <div className="ui form text-lg text-[#2974BD] w-full flex gap-3 flex-col items-center my-5">
                         <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
                             <FaRegUser size={30} />
                             <input
@@ -90,7 +88,7 @@ export const Register = () => {
                                 className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
                             />
                         </div>
-                        <p>{formErrors.email}</p>
+                        <p className="text-red-400 font-normal text-xs">{formErrors.email}</p>
                         <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
                             <FiLock size={30} />
                             <input
@@ -102,7 +100,7 @@ export const Register = () => {
                                 className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
                             />
                         </div>
-                        <p>{formErrors.password}</p>
+                        <p className="text-red-400 font-normal text-xs">{formErrors.password}</p>
                         <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
                             <FiLock size={30} />
                             <input
@@ -114,15 +112,15 @@ export const Register = () => {
                                 className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
                             />
                         </div>
-                        <p>{formErrors.confirmPassword}</p>
-                        <button className="bg-[#1B87EA] text-white font-semibold py-2 w-9/12 rounded-xl">Register</button>
+                        <p className="text-red-400 font-normal text-xs">{formErrors.confirmPassword}</p>
+                        <button className="bg-[#1B87EA] hover:bg-[#1B87EA]/90 mt-5 text-white font-semibold py-2 w-9/12 rounded-xl">Register</button>
                     </div>
                 </form>
-                <div className="text-[#2974BD] w-full text-center mt-5">
-                    Already have an account? <span onClick={() => navigation("/login")} className="px-2 font-medium">Login</span>
+                <div className="text-[#2974BD] text-sm w-full text-center mt-5">
+                    Already have an account? <span onClick={() => navigation("/login")} className="px-2 font-medium cursor-pointer">Login</span>
                 </div>
             </div>
-        </>
+
     );
 };
 

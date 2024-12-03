@@ -68,7 +68,7 @@ export const Login = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="container h-full flex flex-col justify-center">
                 {Object.keys(formErrors).length === 0 && isSubmit ? (
                     <div className="ui message success">
                         Login Successfully
@@ -78,7 +78,7 @@ export const Login = () => {
                 )}
 
                 <form onSubmit={handleSubmit} className="w-full">
-                    <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center mt-16 ">Welcome Back</h1>
+                    <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center">Welcome Back</h1>
                     <h1 className=" text-blue-500 w-full font-medium text-center pb-4">Enter your login details to access your account</h1>
 
                     <div className="ui form text-lg text-[#2974BD] w-full flex gap-2 flex-col items-center my-5">
@@ -106,7 +106,7 @@ export const Login = () => {
                             />
                         </div>
                         <p>{formErrors.password}</p>
-                        <button onClick={() => navigation("/dashboard")} className="bg-[#1B87EA] text-white font-semibold py-2 w-9/12 rounded-xl">Login</button>
+                        <button onClick={() => navigation("/dashboard")} className="bg-[#1B87EA] mt-5 text-white font-semibold py-2 w-9/12 rounded-xl">Login</button>
                     </div>
                 </form>
                 <div className="text-[#2974BD] w-full text-center mt-5">
