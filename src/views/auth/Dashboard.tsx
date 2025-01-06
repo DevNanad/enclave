@@ -18,7 +18,7 @@ function Dashboard() {
     }, [])
 
     return (
-        <div className="h-screen flex gap-3 flex-col bg-primary w-full">
+        <div className="h-screen flex gap-3 flex-col bg-primary rounded-sm w-full">
             <Header />
             <Chat emailBody={emailBody} />
         </div>
