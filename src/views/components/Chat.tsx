@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { IoIosSend } from "react-icons/io";
 
 export default function Chat({ emailBody }) {
     const [message, setMessage] = useState('');
-    const [value, setValue] = useState("");
     const textareaRef = useRef(null);
     useEffect(() => {
         // Ensure emailBody is a string before assigning to the state
@@ -22,25 +22,29 @@ export default function Chat({ emailBody }) {
         textarea.style.height = `${textarea.scrollHeight}px`;
 
         // Update the value state
-        setValue(e.target.value);
+        setMessage(e.target.value);
     };
 
     return (
         <div className="flex-1 rounded-2xl border bg-white border-tertiary/40 relative overflow-hidden">
-            <h2 className="text-center text-lg text-tertiary font-bold">
-                Enclave
-            </h2>
 
-            <form className='text-base pt-9 px-3 bg-tertiary absolute bottom-0 rounded-tl-2xl rounded-tr-2xl w-full'>
+            <form className='text-base pt-4 pb-2 px-2 bg-tertiary absolute bottom-0 rounded-tl-2xl rounded-tr-2xl w-full flex items-end gap-1 '>
                 <textarea
                     ref={textareaRef}
-                    value={value}
+                    value={message}
                     onInput={handleInput}
                     placeholder="Message..."
                     rows={1}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="resize-none max-h-40 text-white scrollbar-custom outline-none overflow-y-auto box-border px-3 py-2 w-full rounded-xl bg-black/30"
+                    className="resize-none max-h-48 text-white scrollbar-custom outline-none overflow-y-auto box-border px-3 py-2 w-full rounded-xl bg-black/30"
                 />
+
+                {!message ? "" :
+
+                    <button className="flex-1 p-1 text-white flex justify-center items-center flex-grow ">
+                        <IoIosSend size={28} />
+                    </button>
+                }
             </form>
         </div>
     );
