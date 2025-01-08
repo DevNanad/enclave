@@ -1,4 +1,4 @@
 console.log("background")
-// chrome.sidePanel
-//   .setPanelBehavior({ openPanelOnActionClick: true })
-//   .catch((error) => console.error(error))
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch(async (error) => console.error(error))

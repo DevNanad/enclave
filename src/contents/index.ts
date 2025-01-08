@@ -1,12 +1,13 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-// export const config: PlasmoCSConfig = {
-//   matches: ["https://www.mail.google.com/*"]
-// }
+export const config: PlasmoCSConfig = {
+  matches: ["https://mail.google.com/*"]
+}
 
-// chrome.sidePanel
-//   .setPanelBehavior({ openPanelOnActionClick: true })
-//   .catch((error) => console.error(error))
+// export const config: PlasmoCSConfig = {
+//   matches: ["<all_urls>"],
+//   all_frames: true
+// }
 
 //get body of an open gmail
 
@@ -70,8 +71,3 @@ function observeEmailClick() {
 
 // Start observing changes
 observeEmailClick()
-
-export const config: PlasmoCSConfig = {
-  matches: ["<all_urls>"],
-  all_frames: true
-}

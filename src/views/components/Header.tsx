@@ -7,7 +7,7 @@ export default function Header() {
 
     return (
         <header className='flex flex-none w-full gap-3 flex-row relative'>
-            <div className='user p-2 basis-8/12 rounded-lg drop-shadow-sm text-tertiary font-semibold text-base bg-white '>
+            <div className='user py-2 px-4 basis-8/12 rounded-lg drop-shadow-sm text-tertiary font-semibold text-base bg-white '>
                 <h3>John Doe</h3>
             </div>
             <button className='p-2 basis-2/12 rounded-lg drop-shadow-sm text-tertiary font-semibold text-base bg-white flex flex-row items-center gap-1 '>All <FaChevronDown /></button>
@@ -16,16 +16,13 @@ export default function Header() {
             </button>
 
             {!openMore ? '' : (
-                <div className='border border-tertiary/50 z-10 absolute top-10 right-0 flex flex-col items-start gap-1 bg-white py-3 rounded-lg text-base'>
+                <div className='border border-tertiary/50 z-10 absolute top-10 right-0 flex flex-col items-start gap-1 shadow-sm bg-white py-3 rounded-lg text-base'>
                     <button className='hover:bg-tertiary hover:text-white text-left w-full px-5'>Profile</button>
                     <button className='hover:bg-tertiary hover:text-white text-left w-full px-5'>Subscription</button>
                     <button className='hover:bg-tertiary hover:text-white text-left w-full px-5'>Logout</button>
                 </div>
 
             )}
-
-
-
 
         </header>
     )
