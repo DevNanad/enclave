@@ -1,27 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .scrollbar-custom {
-    scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: #ffffff81 transparent; /* Thumb and track colors */
-    border-radius: 10px;
-  }
+* {
+  /* border: 1px solid red; */
+  box-sizing: border-box !important;
+}
 
-  .scrollbar-custom::-webkit-scrollbar {
-    width: 5px;
-    height: 8px;
-    border-radius: 10px;
-  }
+.poppins {
+  font-family: "Poppins", serif;
+}
 
-  .scrollbar-custom::-webkit-scrollbar-thumb {
-    background-color: #ffffff81; /* Thumb color */
-    border-radius: 10px;
-  }
+/* html table  scrollbar Webkit-based browsers */
+.barrr::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
 
-  .scrollbar-custom::-webkit-scrollbar-track {
-    background-color: transparent; /* Track color */
-    border-radius: 10px;
-  }
+.barrr::-webkit-scrollbar-thumb {
+  background-color: rgba(65, 65, 65, 0.5);
+  border-radius: 3px;
+}
+
+.barrr::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
 }
