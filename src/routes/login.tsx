@@ -18,7 +18,7 @@ export const Login = () => {
     const navigation = useNavigate();
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const loginQuery = useLoginAuth()
+    const loginQuery: any = useLoginAuth()
 
 
     const schema: ZodType<LoginFD> = z.object({
@@ -33,68 +33,56 @@ export const Login = () => {
         //setIsLoading(true)
 
         try {
-            //const response = await login(data.email, data.password)
-
             loginQuery.mutate({
                 email: data.email,
                 password: data.password
             })
 
-            console.log(loginQuery.data);
+            const responseData = loginQuery.data.data
 
-
-            //const responseData = await response.data
-
-            //setIsLoading(false);
 
             //console.log(responseData);
 
-            //setIsLoading(false)
 
-            // if (responseData.role === "USER") {
-            //     toast.success(responseData.message, {
-            //         position: "top-center",
-            //         autoClose: 5000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //         theme: "colored",
-            //     })
-            //     //navigate to user dashboard
-            //     // useAuthStore.setState({ token: JSON.stringify(responseData)})
-            //     // useAuthStore.setState({ user_id: responseData.user_id})
-            //     // localStorage.setItem('user_id', responseData.user_id)
-            //     navigation('/dashboard', { replace: true })
-            // } else if (responseData.role === 'ADMIN') {
-            //     //navigate to admin dashboard
-            //     // useAuthStore.setState({ token: JSON.stringify(responseData)})
-            //     // useAuthStore.setState({ user_id: responseData.user_id})
-            //     // localStorage.setItem('user_id', responseData.user_id)
-            //     // navigate('/admin', {replace: true})
-            // } else {
-            //     console.log("No role specified");
-            // }
+
+            if (responseData.role === "USER") {
+                toast.success(responseData.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
+                //navigate to user dashboard
+                // useAuthStore.setState({ token: JSON.stringify(responseData)})
+                // useAuthStore.setState({ user_id: responseData.user_id})
+                // localStorage.setItem('user_id', responseData.user_id)
+                navigation('/dashboard', { replace: true })
+            } else if (responseData.role === 'ADMIN') {
+                //navigate to admin dashboard
+                // useAuthStore.setState({ token: JSON.stringify(responseData)})
+                // useAuthStore.setState({ user_id: responseData.user_id})
+                // localStorage.setItem('user_id', responseData.user_id)
+                // navigate('/admin', {replace: true})
+            } else {
+                console.log("No role specified");
+            }
 
         } catch (err: any) {
-            //setIsLoading(false)
-            console.log(loginQuery.error)
-            // if (err.message === "Network Error") {
-            //     //setIsLoading(false)
-            // } else {
-            //     //setIsLoading(false)
-            //     toast.error(err.response.data.message, {
-            //         position: "top-center",
-            //         autoClose: 5000,
-            //         hideProgressBar: false,
-            //         closeOnClick: true,
-            //         pauseOnHover: true,
-            //         draggable: true,
-            //         progress: undefined,
-            //         theme: "colored",
-            //     })
-            // }
+            //console.log(loginQuery.error)
+            toast.error(loginQuery.error.response.data.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            })
         }
     }
 
