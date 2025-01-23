@@ -1,135 +1,150 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaRegUser } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
 import { FiLock } from "react-icons/fi";
+import { z, ZodType } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { toast, ToastContainer } from "react-toastify";
+import { registerUser } from "~api/auth";
+
+type RegisterFD = {
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+}
 
 export const Register = () => {
     const navigation = useNavigate();
+    const [isLoading, setIsLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
-    const initialValues = {
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    };
+    const schema: ZodType<RegisterFD> = z.object({
+        email: z.string().email(),
+        password: z.string().min(4, { message: "Password too short" }).max(30),
+        confirmPassword: z.string(),
+    }).refine((data) => data.password === data.confirmPassword, {
+        message: "Password does not match",
+        path: ["confirmPassword"]
+    })
 
-    type FormErrors = {
-        email?: string;
-        password?: string;
-        confirmPassword?: string;
-    };
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFD>({ resolver: zodResolver(schema) })
 
-    const [formValues, setFormValues] = useState(initialValues);
-    const [formErrors, setFormErrors] = useState<FormErrors>({});
-    const [isSubmit, setIsSubmit] = useState(false);
+    async function handleRegister(data: RegisterFD) {
+        setIsLoading(true)
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
-    };
+        try {
+            const response = await registerUser(data.email, data.password)
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setFormErrors(validate(formValues));
-        setIsSubmit(true);
-    };
+            const responseData = await response.data
 
-    useEffect(() => {
-        console.log(formErrors);
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log(formValues);
+            setIsLoading(false);
+            //console.log(responseData);
+
+            if (responseData.message === "success") {
+                toast.success("Registered Successfully", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
+                reset()
+                navigation('/login', { replace: true })
+            }
+
+        } catch (err: any) {
+            setIsLoading(false)
+            if (err.message === "Network Error") {
+                setIsLoading(false)
+            } else {
+                setIsLoading(false)
+                console.log(err.response);
+
+                toast.warning(err.response.data.message, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
+            }
         }
-    }, [formErrors, formValues, isSubmit]);
-
-    const validate = (values: typeof initialValues) => {
-        const errors: FormErrors = {};
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-
-        if (!values.email) {
-            errors.email = "Email is required!";
-        } else if (!regex.test(values.email)) {
-            errors.email = "This is not a valid email format!";
-        }
-        if (!values.password) {
-            errors.password = "Password is required";
-        } else if (values.password.length < 4) {
-            errors.password = "Password must be more than 4 characters";
-        }
-        if (values.password !== values.confirmPassword) {
-            errors.confirmPassword = "Those passwords didn’t match. Try again.";
-        }
-        return errors;
-    };
+    }
 
     return (
-            <div className="container h-full flex flex-col justify-center gap-12">
-                {Object.keys(formErrors).length === 0 && isSubmit ? (
-                    <div className="ui message success w-full text-green-400 font-semibold text-base">
-                        Registered Successfully
-                    </div>
-                ) : (
-                    <div></div> // Or null if you prefer
-                )}
-                <div className="w-full">
-                    <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center">Register</h1>
-                    <h1 className=" text-blue-500 w-full font-medium text-center pb-4">Create your account</h1>
-                </div>
-                
-                <form onSubmit={handleSubmit} className="w-full">
-                    <div className="ui form text-lg text-[#2974BD] w-full flex gap-3 flex-col items-center my-5">
-                        <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
-                            <FaRegUser size={30} />
-                            <input
-                                type="text"
-                                name="email"
-                                placeholder="Email"
-                                value={formValues.email}
-                                onChange={handleChange}
-                                className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
-                            />
-                        </div>
-                        <p className="text-red-400 font-normal text-xs">{formErrors.email}</p>
-                        <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
-                            <FiLock size={30} />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                value={formValues.password}
-                                onChange={handleChange}
-                                className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
-                            />
-                        </div>
-                        <p className="text-red-400 font-normal text-xs">{formErrors.password}</p>
-                        <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
-                            <FiLock size={30} />
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                placeholder="Confirm password"
-                                value={formValues.confirmPassword}
-                                onChange={handleChange}
-                                className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
-                            />
-                        </div>
-                        <p className="text-red-400 font-normal text-xs">{formErrors.confirmPassword}</p>
-                        <button className="bg-[#1B87EA] hover:bg-[#1B87EA]/90 mt-5 text-white font-semibold py-2 w-9/12 rounded-xl">Register</button>
-                    </div>
-                </form>
-                <div className="text-[#2974BD] text-sm w-full text-center mt-5">
-                    Already have an account? <span onClick={() => navigation("/login")} className="px-2 font-medium cursor-pointer">Login</span>
-                </div>
+        <div className="container h-full flex flex-col relative justify-center gap-12">
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <div className="w-full">
+                <h1 className=" text-4xl text-blue-500 w-full font-semibold text-center">Register</h1>
+                <h1 className=" text-blue-500 w-full font-medium text-center pb-4">Create your account</h1>
             </div>
+
+            <form onSubmit={handleSubmit(handleRegister)} className="w-full">
+                <div className="ui form text-lg text-[#2974BD] w-full flex gap-3 flex-col items-center my-5">
+                    <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
+                        <HiOutlineMail size={30} />
+                        <input
+                            type="text"
+                            name="email"
+                            placeholder="Email"
+                            {...register("email")}
+                            className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
+                        />
+                    </div>
+                    {errors.email && <span className="text-red-400 text-center text-sm">{errors.email.message}</span>}
+                    <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
+                        <FiLock size={30} />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="Password"
+                            {...register("password")}
+                            className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
+                        />
+                    </div>
+                    {errors.password && <span className="text-red-400 text-center text-sm">{errors.password.message}</span>}
+                    <div className="field w-9/12 flex py-2 px-3 bg-[#e7f0f8] rounded-xl">
+                        <FiLock size={30} />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            placeholder="Confirm password"
+                            {...register("confirmPassword")}
+                            className=" bg-transparent focus:outline-none pl-2 flex-grow placeholder:text-[#2974BD]"
+                        />
+                    </div>
+                    {errors.confirmPassword && <span className="text-red-400 text-center text-sm">{errors.confirmPassword.message}</span>}
+                    <div className="checkme w-9/12 py-1 px-3 flex gap-3">
+                        <input className='h-4 w-4 bg-transparent checked:bg-red-500' type="checkbox" onChange={() => setShowPassword(!showPassword)} />
+                        <p className='text-sm font-medium text-dos'>{showPassword ? "Hide" : "Show"} password</p>
+                    </div>
+                    {isLoading
+                        ? (<button disabled className="bg-[#1B87EA] mt-5 text-white font-semibold py-2 w-9/12 rounded-xl">Loading...</button>)
+                        : (<button type="submit" className="bg-[#1B87EA] mt-5 text-white font-semibold py-2 w-9/12 rounded-xl">Register</button>)}
+                </div>
+            </form>
+            <div className="text-[#2974BD] text-sm w-full text-center mt-5">
+                Already have an account? <span onClick={() => navigation("/login")} className="px-2 font-medium cursor-pointer">Login</span>
+            </div>
+        </div>
 
     );
 };
-
-
-//     return (
-//         <div style={{ padding: 16 }}>
-//             <span className="text-lg">Home page</span>
-//             <button onClick={() => navigation("/about")}>About</button>
-//             <button onClick={() => navigation("/dashboard")}>dashboard</button>
-//         </div>
-//     )
-// }

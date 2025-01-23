@@ -67,7 +67,7 @@ export default function Header() {
                     }`}
             >
                 {/* Profile Modal */}
-                <div onClick={(e: any) => e.stopPropagation()} className='border relative w-11/12 h-4/6 border-tertiary/50 z-10 shadow-sm bg-white p-3 rounded-xl text-base overflow-hidden'>
+                <div onClick={(e: any) => e.stopPropagation()} className='border relative w-11/12 h-5/6 border-tertiary/50 z-10 shadow-sm bg-white p-3 rounded-xl text-base overflow-hidden'>
                     <div className='w-full flex justify-end'>
                         <button onClick={() => setOpenProfile(false)} className="text-tertiary/80">
                             <IoClose size={30} />
@@ -128,7 +128,7 @@ export default function Header() {
                     }`}
             >
                 {/* Subscription Modal */}
-                <div onClick={(e: any) => e.stopPropagation()} className='border relative w-11/12 h-4/6 border-tertiary/50 z-10 shadow-sm bg-white p-3 rounded-xl text-base overflow-hidden'>
+                <div onClick={(e: any) => e.stopPropagation()} className='border relative w-11/12 h-5/6 border-tertiary/50 z-10 shadow-sm bg-white p-3 rounded-xl text-base overflow-hidden'>
                     <div className='w-full flex justify-end'>
                         <button onClick={() => setOpenSubs(false)} className="text-tertiary/80">
                             <IoClose size={30} />

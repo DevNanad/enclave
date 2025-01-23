@@ -7,7 +7,7 @@ import { Register } from "./register"
 
 export const Routing = () => (
     <Routes>
-        <Route path="/" element={<Register />} />
+        <Route path="/" element={<Register />} /> //put back to Register
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
     </Routes>

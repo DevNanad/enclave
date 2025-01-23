@@ -3,6 +3,10 @@ import "~style.css"
 import Header from "../components/Header"
 import Chat from "../components/Chat"
 
+
+
+
+
 function Dashboard() {
     const [emailBody, setEmailBody] = useState("")
 
@@ -15,6 +19,8 @@ function Dashboard() {
             }
             return true;
         });
+
+
     }, [])
 
     return (
